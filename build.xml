@@ -7,8 +7,9 @@
 	<property name="docs" location="apidocs"/>
 	<property name="libs" location="libs"/>
 	
-	<property name="version" value="0.0-dev"/>
+	<property name="version" value="3.0-dev"/>
 	<property name="versionsuffix" value="-${version}"/>
+	<property name="pkgname" value="${ant.project.name}${versionsuffix}"/>
 
 	<!-- GLOBALS -->
 	<target name="init">
@@ -23,40 +24,54 @@
 			<include name="commons-logging*.jar"/>
 		</fileset>
 	</path>
+
+	<target name="preparesource" depends="init">
+	</target>
 	
-	<target name="compile" depends="init">
+	<target name="compile" depends="preparesource">
 		<mkdir dir="${build}"/>
-		<javac srcdir="${src}" destdir="${build}" source="1.4" target="1.4">
-			<classpath refid="classpath"/>
-		</javac>
+		<javac srcdir="${src}" destdir="${build}" source="1.4" target="1.4" classpathref="classpath"/>
 	</target>
 	
 	<target name="dist" depends="compile">
 		<mkdir dir="${dist}"/>
-		<jar destfile="${dist}/${ant.project.name}${versionsuffix}.jar" basedir="${build}"/>
+		<jar destfile="${dist}/${ant.project.name}${versionsuffix}.jar" basedir="${build}">
+			<manifest>
+				<attribute name="Main-Class" value="de.pangaea.webserver.WebServer"/>
+				<attribute name="Specification-Title" value="Java Servlet API"/>
+				<attribute name="Specification-Version" value="2.3"/>
+				<attribute name="Specification-Vendor" value="Sun Microsystems"/>
+				<attribute name="Implementation-Title" value="de.pangaea.webserver"/>
+				<attribute name="Implementation-Version" value="${version}"/>
+				<attribute name="Implementation-Vendor" value="panFMP Developers c/o Uwe Schindler"/>
+			</manifest>    	
+			<metainf dir="${basedir}">
+				<include name="LICENSE.txt"/>
+				<include name="NOTICE.txt"/>
+			</metainf>
+		</jar>
 	</target>
 	
 	<!-- JAVADOCS TARGET -->
-	<target name="javadocs" depends="init">
-		<javadoc sourcepath="${src}" destdir="${docs}" source="1.4">
-			<classpath refid="classpath"/>
-		</javadoc>
+	<target name="javadocs" depends="preparesource">
+		<javadoc sourcepath="${src}" destdir="${docs}" source="1.4" packagenames="*" classpathref="classpath"/>
 	</target>	
 	
 	<!-- PACKAGING -->
 	<target name="package" depends="dist,javadocs">
-		<!--
-		<zip destfile="${basedir}/${ant.project.name}${versionsuffix}.zip">
-			<zipfileset dir="${libs}/webserver" prefix="libs">
+		<zip destfile="${basedir}/${pkgname}.zip">
+			<zipfileset dir="${libs}/webserver" prefix="${pkgname}/libs">
 				<include name="servlet*.jar"/>
 			</zipfileset>
-			<zipfileset dir="${libs}/core" prefix="libs">
+			<zipfileset dir="${libs}/core" prefix="${pkgname}/libs">
 				<include name="commons-logging*.jar"/>
 			</zipfileset>
-			<zipfileset dir="${dist}" prefix="libs"/>
-			<zipfileset dir="${docs}" prefix="javadocs"/>
+			<zipfileset dir="${dist}" prefix="${pkgname}/libs"/>
+			<zipfileset dir="${docs}" prefix="${pkgname}/javadocs"/>
+			<zipfileset dir="${basedir}" prefix="${pkgname}">
+				<include name="*.txt"/>
+			</zipfileset>
 		</zip>
-		-->
 	</target>	
 	
 	<!-- CLEANUP TARGET -->
@@ -64,6 +79,7 @@
 		<delete dir="${build}"/>
 		<delete dir="${dist}"/>
 		<delete dir="${docs}"/>
+		<delete file="${basedir}/${pkgname}.zip"/>
 	</target>
 	
 </project>

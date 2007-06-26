@@ -254,7 +254,7 @@ public class WebServer implements ServletContext,Runnable {
 
     public java.util.Set getResourcePaths(java.lang.String prefix) { return null; }
 
-    public String getServerInfo() { return "java:"+this.getClass().getName()+"/3.0"; }
+    public String getServerInfo() { return PROGNAME+"/"+VERSION; }
 
     /**
      * @deprecated Method getServlet is deprecated
@@ -395,6 +395,9 @@ public class WebServer implements ServletContext,Runnable {
     public static final int STATUS_RUNNING=1;
     public static final int STATUS_SHUTDOWN=2;
     public static final int STATUS_KILLED=3;
+
+    public static final String VERSION=de.pangaea.webserver.Package.get().getImplementationVersion();
+    public static final String PROGNAME=de.pangaea.webserver.Package.get().getImplementationTitle();
 
     protected int port;
     protected String hostName;
