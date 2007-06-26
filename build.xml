@@ -38,10 +38,11 @@
 		<jar destfile="${dist}/${ant.project.name}${versionsuffix}.jar" basedir="${build}">
 			<manifest>
 				<attribute name="Main-Class" value="de.pangaea.webserver.WebServer"/>
+				<attribute name="Package" value="de.pangaea.webserver"/>
 				<attribute name="Specification-Title" value="Java Servlet API"/>
 				<attribute name="Specification-Version" value="2.3"/>
 				<attribute name="Specification-Vendor" value="Sun Microsystems"/>
-				<attribute name="Implementation-Title" value="de.pangaea.webserver"/>
+				<attribute name="Implementation-Title" value="PANGAEA-MiniWebServer"/>
 				<attribute name="Implementation-Version" value="${version}"/>
 				<attribute name="Implementation-Vendor" value="panFMP Developers c/o Uwe Schindler"/>
 			</manifest>    	
