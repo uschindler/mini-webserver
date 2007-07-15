@@ -11,6 +11,10 @@
 	<property name="versionsuffix" value="-${version}"/>
 	<property name="pkgname" value="${ant.project.name}${versionsuffix}"/>
 
+	<property name="year" value="2007"/>
+	
+	<property name="javadoc.link.sun" value="http://java.sun.com/j2se/1.4/docs/api/" />
+
 	<!-- GLOBALS -->
 	<target name="init">
 	</target>
@@ -54,8 +58,14 @@
 	</target>
 	
 	<!-- JAVADOCS TARGET -->
-	<target name="javadocs" depends="preparesource">
-		<javadoc sourcepath="${src}" destdir="${docs}" source="1.4" packagenames="*" classpathref="classpath"/>
+	<target name="javadocs" depends="init">
+		<delete dir="${docs}"/>
+		<mkdir dir="${docs}"/>
+		<javadoc sourcepath="${src}" destdir="${docs}" source="1.4" packagenames="*" classpathref="classpath" windowtitle="${ant.project.name} ${version} Documentation">
+			<link href="${javadoc.link.sun}"/>
+			<doctitle><![CDATA[<H1>${ant.project.name} ${version}</H1>]]></doctitle>
+			<bottom><![CDATA[<ADDRESS>Copyright &copy;${year} panFMP Developers c/o Uwe Schindler</ADDRESS>]]></bottom>
+		</javadoc>
 	</target>	
 	
 	<!-- PACKAGING -->
