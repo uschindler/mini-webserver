@@ -149,15 +149,18 @@ public class StringUtils {
             if (p2<0) break;
 
             dest.append(encodeHTML(s.substring(p,p2)));
+
+            // scan links from beginning
             StringBuffer link=new StringBuffer();
-            char ch='\0',lastChar; boolean stop=false;
-            while (!stop && p2<len) {
-                lastChar=ch;
+            char ch='\0';
+        out1:
+            while (p2<len) {
                 ch=s.charAt(p2);
                 switch (ch) {
                     case '/':
                     case '@':
                     case '.':
+                    case ',':
                     case ':':
                     case '#':
                     case '?':
@@ -168,26 +171,36 @@ public class StringUtils {
                     case '=':
                     case '$':
                     case '~':
-                        link.append(ch); p2++;
-                        break;
                     case '(':
-                        if (!Character.isWhitespace(lastChar)) {
-                            link.append(ch); p2++;
-                        } else stop=true;
-                        break;
                     case ')':
-                        if (p2+1<len) {
-                            if (!Character.isWhitespace(s.charAt(p2+1))) {
-                                link.append(ch); p2++;
-                            } else stop=true;
-                        } else stop=true;
+                        link.append(ch); p2++;
                         break;
                     default:
                         if (Character.isLetterOrDigit(ch)) {
                             link.append(ch); p2++;
-                        } else stop=true;
+                        } else break out1;
                 }
             }
+            // clean up links from the right side again (strip chars)
+            int linklen=link.length();
+        out2:
+            for (int i=linklen-1; i>=0; i--) {
+                ch=link.charAt(i);
+                switch (ch) {
+                    case '.':
+                    case ',':
+                    case ':':
+                    case '(':
+                    case ')':
+                        linklen--;
+                        p2--;
+                        break;
+                    default:
+                        break out2;
+                }
+            }
+            link.setLength(linklen);
+
             dest.append("<a ");
             if (linkTarget!=null) {
                 dest.append("target=\"");
