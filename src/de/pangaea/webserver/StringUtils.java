@@ -161,6 +161,7 @@ public class StringUtils {
                     case '@':
                     case '.':
                     case ',':
+                    case ';':
                     case ':':
                     case '#':
                     case '?':
@@ -189,6 +190,7 @@ public class StringUtils {
                 switch (ch) {
                     case '.':
                     case ',':
+                    case ';':
                     case ':':
                     case '(':
                     case ')':
