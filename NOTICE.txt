@@ -1,5 +1,5 @@
 PANGAEA mini-webserver (used by panFMP and WDC-MARE Reports)
-Copyright 2007 panFMP Developers Team c/o Uwe Schindler
+Copyright 2007-2008 panFMP Developers Team c/o Uwe Schindler
 
 http://www.panFMP.org/
 http://sourceforge.net/projects/panfmp/
