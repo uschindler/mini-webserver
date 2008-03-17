@@ -174,6 +174,8 @@ public class StringUtils {
                     case '~':
                     case '(':
                     case ')':
+                    case '<':
+                    case '>':
                         link.append(ch); p2++;
                         break;
                     default:
@@ -194,6 +196,8 @@ public class StringUtils {
                     case ':':
                     case '(':
                     case ')':
+                    case '<':
+                    case '>':
                         linklen--;
                         p2--;
                         break;
