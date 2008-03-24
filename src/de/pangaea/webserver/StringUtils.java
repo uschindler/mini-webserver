@@ -153,57 +153,20 @@ public class StringUtils {
             // scan links from beginning
             StringBuffer link=new StringBuffer();
             char ch='\0';
-        out1:
             while (p2<len) {
                 ch=s.charAt(p2);
-                switch (ch) {
-                    case '/':
-                    case '@':
-                    case '.':
-                    case ',':
-                    case ';':
-                    case ':':
-                    case '#':
-                    case '?':
-                    case '%':
-                    case '-':
-                    case '_':
-                    case '&':
-                    case '=':
-                    case '$':
-                    case '~':
-                    case '(':
-                    case ')':
-                    case '<':
-                    case '>':
-                        link.append(ch); p2++;
-                        break;
-                    default:
-                        if (Character.isLetterOrDigit(ch)) {
-                            link.append(ch); p2++;
-                        } else break out1;
-                }
+				if (!(Character.isWhitespace(ch) || Character.isSpaceChar(ch))) {
+					link.append(ch); p2++;
+				} else break;
             }
             // clean up links from the right side again (strip chars)
             int linklen=link.length();
-        out2:
             for (int i=linklen-1; i>=0; i--) {
                 ch=link.charAt(i);
-                switch (ch) {
-                    case '.':
-                    case ',':
-                    case ';':
-                    case ':':
-                    case '(':
-                    case ')':
-                    case '<':
-                    case '>':
-                        linklen--;
-                        p2--;
-                        break;
-                    default:
-                        break out2;
-                }
+                if (!Character.isLetterOrDigit(ch)) {
+					linklen--;
+					p2--;
+				} else break;
             }
             link.setLength(linklen);
 
