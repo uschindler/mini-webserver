@@ -26,25 +26,25 @@ public class StringUtils {
     public static String decodeURI(String s) {
         try {
             return URLDecoder.decode(s,"iso-8859-1");
-        } catch (java.io.UnsupportedEncodingException e) { return null; }
+        } catch (java.io.UnsupportedEncodingException e) { return s; }
     }
 
     public static String encodeURI(String s) {
         try {
             return URLEncoder.encode(s,"iso-8859-1");
-        } catch (java.io.UnsupportedEncodingException e) { return null; }
+        } catch (java.io.UnsupportedEncodingException e) { return s; }
     }
 
     public static String utf8decodeURI(String s) {
         try {
             return URLDecoder.decode(s,"UTF-8");
-        } catch (java.io.UnsupportedEncodingException e) { return null; }
+        } catch (java.io.UnsupportedEncodingException e) { return s; }
     }
 
     public static String utf8encodeURI(String s) {
         try {
             return URLEncoder.encode(s,"UTF-8");
-        } catch (java.io.UnsupportedEncodingException e) { return null; }
+        } catch (java.io.UnsupportedEncodingException e) { return s; }
     }
 
     public static String getStatusString(int status) {
