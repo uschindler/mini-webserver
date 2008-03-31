@@ -50,7 +50,7 @@ public class SendFileServlet extends HttpServlet {
     private File getFile(HttpServletRequest req, HttpServletResponse resp) throws IOException
     {
         String uri=req.getRequestURI();
-        String path=req.getRealPath(StringUtils.utf8decodeURI(uri));
+        String path=req.getRealPath(StringUtils.utf8decodeURIraw(uri));
         File file=new File(path);
 
         if (uri.toUpperCase().startsWith("/WEB-INF/")) {

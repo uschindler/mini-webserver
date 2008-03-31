@@ -163,7 +163,7 @@ public class HttpConnection extends java.lang.Thread implements HttpServletReque
             if (ok) {
                 try {
                     // servlet laden und starten von service()
-                    String mapping=null,decodedRequestURI=StringUtils.utf8decodeURI(requestURI);
+                    String mapping=null,decodedRequestURI=StringUtils.utf8decodeURIraw(requestURI);
                     servletPath=decodedRequestURI;
                     Iterator it=parent.uriMappings.entrySet().iterator();
                     while (it.hasNext()) {
@@ -173,7 +173,7 @@ public class HttpConnection extends java.lang.Thread implements HttpServletReque
                             map=map.substring(0,map.length()-2);
                             if (decodedRequestURI.startsWith(map+'/') || decodedRequestURI.equals(map)) {
                                 mapping=(String)e.getValue();
-                                pathInfo=StringUtils.utf8decodeURI(requestURI.substring(map.length()));
+                                pathInfo=StringUtils.utf8decodeURIraw(requestURI.substring(map.length()));
                                 if (pathInfo.equals("")) pathInfo=null;
                                 servletPath=requestURI.substring(0,map.length());
                                 break;

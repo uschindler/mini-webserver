@@ -47,6 +47,33 @@ public class StringUtils {
         } catch (java.io.UnsupportedEncodingException e) { return s; }
     }
 
+    public static String decodeURIraw(String s) {
+		return decodeURI(escapePlusChar(s,"%2B"));
+    }
+
+    public static String encodeURIraw(String s) {
+		return escapePlusChar(encodeURI(s),"%20");
+    }
+
+    public static String utf8decodeURIraw(String s) {
+		return utf8decodeURI(escapePlusChar(s,"%2B"));
+    }
+
+    public static String utf8encodeURIraw(String s) {
+		return escapePlusChar(utf8encodeURI(s),"%20");
+    }
+
+    private static final String escapePlusChar(String s, String replaceSequence) {
+		StringBuffer sb=new StringBuffer(s.length());
+		synchronized(sb) { // performance
+			for (int i=0,c=s.length(); i<c; i++) {
+				char ch=s.charAt(i);
+				if (ch=='+') sb.append(replaceSequence); else sb.append(ch);
+			}
+			return sb.toString();
+		}
+    }
+	
     public static String getStatusString(int status) {
         switch (status) {
             case 100: return "Continue";
@@ -163,7 +190,7 @@ public class StringUtils {
             int linklen=link.length();
             for (int i=linklen-1; i>=0; i--) {
                 ch=link.charAt(i);
-                if (!Character.isLetterOrDigit(ch)) {
+                if (!(Character.isLetterOrDigit(ch) || ch=='/')) {
 					linklen--;
 					p2--;
 				} else break;
@@ -178,29 +205,11 @@ public class StringUtils {
             }
             dest.append("href=\"");
             String linkstr=link.toString();
-            if (linkstr.startsWith("doi:")) {
-                dest.append("http://dx.doi.org/");
-                dest.append(encodeHTML(linkstr.substring(4)));
-                dest.append("\">");
-                dest.append(encodeHTML(linkstr));
-            } else if (linkstr.startsWith("hdl:")) {
-                dest.append("http://hdl.handle.net/");
-                dest.append(encodeHTML(linkstr.substring(4)));
-                dest.append("\">");
-                dest.append(encodeHTML(linkstr));
-            } else if (linkstr.startsWith("link:")) {
-                dest.append(encodeHTML(linkstr.substring(5)));
-                dest.append("\">");
-                dest.append("local link");
-            } else if (linkstr.startsWith("mailto:")) {
-                dest.append(encodeHTML(linkstr));
-                dest.append("\">");
-                dest.append(encodeHTML(linkstr.substring(7)));
-            } else {
-                dest.append(encodeHTML(linkstr));
-                dest.append("\">");
-                dest.append("external link");
-            }
+            if (linkstr.startsWith("doi:")) dest.append("http://dx.doi.org/").append(encodeHTML(utf8encodeURIraw(linkstr.substring(4)))).append("\">").append(encodeHTML(linkstr));
+			else if (linkstr.startsWith("hdl:")) dest.append("http://hdl.handle.net/").append(encodeHTML(utf8encodeURIraw(linkstr.substring(4)))).append("\">").append(encodeHTML(linkstr));
+			else if (linkstr.startsWith("link:")) dest.append(encodeHTML(linkstr.substring(5))).append("\">").append("local link");
+			else if (linkstr.startsWith("mailto:")) dest.append(encodeHTML(linkstr)).append("\">").append(encodeHTML(linkstr.substring(7)));
+			else dest.append(encodeHTML(linkstr)).append("\">").append("external link");
             dest.append("</a>");
 
             p=p2;
