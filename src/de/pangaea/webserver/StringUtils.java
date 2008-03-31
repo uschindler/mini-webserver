@@ -178,8 +178,13 @@ public class StringUtils {
             }
             dest.append("href=\"");
             String linkstr=link.toString();
-            if (linkstr.startsWith("doi:") || linkstr.startsWith("hdl:")) {
+            if (linkstr.startsWith("doi:")) {
                 dest.append("http://dx.doi.org/");
+                dest.append(encodeHTML(linkstr.substring(4)));
+                dest.append("\">");
+                dest.append(encodeHTML(linkstr));
+            } else if (linkstr.startsWith("hdl:")) {
+                dest.append("http://hdl.handle.net/");
                 dest.append(encodeHTML(linkstr.substring(4)));
                 dest.append("\">");
                 dest.append(encodeHTML(linkstr));
