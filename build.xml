@@ -21,11 +21,10 @@
 		
 	<!-- BUILD TARGETS -->
   	<path id="classpath">
-		<fileset dir="${libs}/webserver">
-			<include name="servlet*.jar"/>
-		</fileset>
-		<fileset dir="${libs}/core">
-			<include name="commons-logging*.jar"/>
+		<fileset dir="${libs}">
+			<include name="**/*.jar"/>
+			<!-- exclude local version of metadataportal itsself from compile classpath! -->
+			<exclude name="**/${ant.project.name}*.jar"/>
 		</fileset>
 	</path>
 
@@ -71,31 +70,19 @@
 	<!-- PACKAGING -->
 	<target name="binpackage" depends="dist,javadocs">
 		<zip destfile="${basedir}/${pkgname}-bin.zip">
-			<zipfileset dir="${libs}/webserver" prefix="${pkgname}/libs">
-				<include name="servlet*.jar"/>
-			</zipfileset>
-			<zipfileset dir="${libs}/core" prefix="${pkgname}/libs">
-				<include name="commons-logging*.jar"/>
-			</zipfileset>
+			<zipfileset dir="${libs}" prefix="${pkgname}/libs"/>
 			<zipfileset dir="${dist}" prefix="${pkgname}/libs"/>
 			<zipfileset dir="${docs}" prefix="${pkgname}/javadocs"/>
 			<zipfileset dir="${basedir}" prefix="${pkgname}">
 				<include name="*.txt"/>
+				<include name="*.cfg"/>
 			</zipfileset>
 		</zip>
 	</target>
 
 	<target name="srcpackage" depends="clean">
 		<zip destfile="${basedir}/${pkgname}-src.zip">
-			<zipfileset dir="${basedir}" prefix="${pkgname}">
-				<exclude name="libs/**"/>
-			</zipfileset>
-			<zipfileset dir="${libs}/webserver" prefix="${pkgname}/libs">
-				<include name="servlet*.jar"/>
-			</zipfileset>
-			<zipfileset dir="${libs}/core" prefix="${pkgname}/libs">
-				<include name="commons-logging*.jar"/>
-			</zipfileset>
+			<zipfileset dir="${basedir}" prefix="${pkgname}"/>
 		</zip>
 	</target>
 	
