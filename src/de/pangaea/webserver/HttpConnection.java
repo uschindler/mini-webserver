@@ -247,6 +247,11 @@ public class HttpConnection extends java.lang.Thread implements HttpServletReque
         setDateHeader("Date",reqDate.getTime());
         setHeader("Content-Type","text/html; charset=ISO-8859-1");
         setHeader("Connection","close");
+        if (parent.preventCaching) {
+            setHeader("Cache-Control","no-store, no-cache, must-revalidate, post-check=0, pre-check=0");
+            setHeader("Pragma","no-cache");
+            setHeader("Expires","now");
+        }
     }
 
     protected void writeHeaders(OutputStream out) {

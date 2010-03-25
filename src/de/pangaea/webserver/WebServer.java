@@ -53,6 +53,7 @@ public class WebServer implements ServletContext,Runnable {
         hostName=props.getProperty("server.hostname");
         setDocRoot(props.getProperty("server.docroot","."));
         localOnly=!props.getProperty("server.restrictLocal","0").equals("0");
+        preventCaching=!props.getProperty("server.preventCaching","0").equals("0");
 
         // load servlet mappings
         String s=props.getProperty("server.servlets","");
@@ -402,7 +403,7 @@ public class WebServer implements ServletContext,Runnable {
     protected int port;
     protected String hostName;
     protected String docRoot;
-    protected boolean localOnly=false;
+    protected boolean localOnly=false,preventCaching=false;
 
     private Thread thread=null;
     private Thread shutdownThread=null;
