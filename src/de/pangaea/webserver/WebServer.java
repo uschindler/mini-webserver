@@ -226,7 +226,7 @@ public class WebServer implements ServletContext,Runnable {
 
     public String getMimeType(String s) {
         int p=s.lastIndexOf('.');
-        s=s.substring(p+1).toLowerCase();
+        s=s.substring(p+1).toLowerCase(Locale.ENGLISH);
         return props.getProperty("extension."+s,"text/plain");
     }
 

@@ -53,7 +53,7 @@ public class SendFileServlet extends HttpServlet {
         String path=req.getRealPath(StringUtils.utf8decodeURIraw(uri));
         File file=new File(path);
 
-        if (uri.toUpperCase().startsWith("/WEB-INF/")) {
+        if (uri.toUpperCase(Locale.ENGLISH).startsWith("/WEB-INF/")) {
             if (resp!=null) resp.sendError(HttpServletResponse.SC_FORBIDDEN,"The /WEB-INF directory is not accessible from HTTP user-agents!");
             return null;
         }

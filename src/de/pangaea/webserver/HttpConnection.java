@@ -56,7 +56,7 @@ public class HttpConnection extends java.lang.Thread implements HttpServletReque
             while (!(line=dis.readLine()).equals("")) {
                 pos=line.indexOf(':');
                 if (pos>=0) {
-                    String key=line.substring(0,pos).trim().toLowerCase();
+                    String key=line.substring(0,pos).trim().toLowerCase(Locale.ENGLISH);
                     String value=line.substring(pos+1).trim();
                     //if (value.startsWith("\"") && value.endsWith("\"")) value=value.substring(1,value.length()-1);
                     List v=(List)reqheaders.get(key);
@@ -76,7 +76,7 @@ public class HttpConnection extends java.lang.Thread implements HttpServletReque
                 sendError(HttpServletResponse.SC_LENGTH_REQUIRED,"Missing Content-Length in request!");
                 ok=false;
             }
-            isPostParams=(method.equals("POST") && inpContentType!=null && inpContentType.toLowerCase().equals("application/x-www-form-urlencoded"));
+            isPostParams=(method.equals("POST") && inpContentType!=null && inpContentType.toLowerCase(Locale.ENGLISH).equals("application/x-www-form-urlencoded"));
 
             // input Charset
             String charset=guessCharset(inpContentType);
@@ -284,7 +284,7 @@ public class HttpConnection extends java.lang.Thread implements HttpServletReque
 
     private String guessCharset(String s1) {
         if (s1==null) return null;
-        s1=s1.toLowerCase();
+        s1=s1.toLowerCase(Locale.ENGLISH);
         int p1=s1.indexOf(";");
         int p2=s1.indexOf("charset",p1+1);
         int p3=s1.indexOf("=",p2+7);
@@ -516,14 +516,14 @@ public class HttpConnection extends java.lang.Thread implements HttpServletReque
     }
 
     public String getHeader(String s) {
-        List v=(List)reqheaders.get(s.toLowerCase());
+        List v=(List)reqheaders.get(s.toLowerCase(Locale.ENGLISH));
         return (v==null)?null:((String)v.get(0));
     }
 
     public Enumeration getHeaderNames() { return Collections.enumeration(reqheaders.keySet()); }
 
     public Enumeration getHeaders(String s) {
-        List v=(List)reqheaders.get(s.toLowerCase());
+        List v=(List)reqheaders.get(s.toLowerCase(Locale.ENGLISH));
         return (v==null)?null:Collections.enumeration(v);
     }
 
@@ -637,7 +637,7 @@ public class HttpConnection extends java.lang.Thread implements HttpServletReque
     public void addHeader(String s, String s1) {
         if (committed) throw new IllegalStateException();
         List hd;
-        s=s.toLowerCase();
+        s=s.toLowerCase(Locale.ENGLISH);
         if (s.equals("content-type")) { //determine charset
             if ((respcharset=guessCharset(s1))==null) {
                 respcharset="ISO-8859-1";
@@ -653,7 +653,7 @@ public class HttpConnection extends java.lang.Thread implements HttpServletReque
 
     public void addIntHeader(String s, int i) { addHeader(s,Integer.toString(i)); }
 
-    public boolean containsHeader(String s) { return respheaders.containsKey(s.toLowerCase()); }
+    public boolean containsHeader(String s) { return respheaders.containsKey(s.toLowerCase(Locale.ENGLISH)); }
 
     public String encodeRedirectURL(String s) { return s; }
 
@@ -694,17 +694,17 @@ public class HttpConnection extends java.lang.Thread implements HttpServletReque
     }
 
     public void setDateHeader(String s, long l) {
-        if (containsHeader(s)) respheaders.remove(s.toLowerCase());
+        if (containsHeader(s)) respheaders.remove(s.toLowerCase(Locale.ENGLISH));
         addDateHeader(s,l);
     }
 
     public void setHeader(String s, String s1) {
-        if (containsHeader(s)) respheaders.remove(s.toLowerCase());
+        if (containsHeader(s)) respheaders.remove(s.toLowerCase(Locale.ENGLISH));
         addHeader(s,s1);
     }
 
     public void setIntHeader(String s, int i) {
-        if (containsHeader(s)) respheaders.remove(s.toLowerCase());
+        if (containsHeader(s)) respheaders.remove(s.toLowerCase(Locale.ENGLISH));
         addIntHeader(s,i);
     }
 
